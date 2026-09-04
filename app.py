@@ -1,8 +1,11 @@
 import os
 from flask import Flask, request
 from twilio.twiml.messaging_response import MessagingResponse
+@app.route('/', methods=['GET'])
+def home():
+    return "Server is Running Live!", 200
 
-app = Flask(__name__)
+app = Flask(__name__))
 
 @app.route("/webhook", methods=['POST'])
 def webhook():
