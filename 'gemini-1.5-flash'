@@ -1,3 +1,4 @@
+
 import os
 from flask import Flask, request
 from twilio.twiml.messaging_response import MessagingResponse
@@ -5,12 +6,10 @@ import google.generativeai as genai
 
 app = Flask(__name__)
 
-# Configure API Key
 api_key = os.environ.get("GEMINI_API_KEY")
 if api_key:
     genai.configure(api_key=api_key)
 
-# Use standard gemini-1.5-flash model
 model = genai.GenerativeModel('gemini-1.5-flash')
 
 @app.route("/webhook", methods=['POST'])
@@ -26,8 +25,8 @@ def webhook():
         response = model.generate_content(incoming_msg)
         reply_text = response.text
     except Exception as e:
-        print(f"Error generating response: {e}")
-        reply_text = f"Gemini Error: {str(e)}"  # దీనివల్ల అసలు ఎర్రర్ ఏంటో వాట్సాప్‌లోనే కనిపిస్తుంది!
+        print(f"Error: {e}")
+        reply_text = f"Gemini Error: {str(e)}"
 
     resp.message(reply_text)
     return str(resp)
