@@ -5,14 +5,13 @@ import google.generativeai as genai
 
 app = Flask(__name__)
 
-# Configure Gemini API Key from environment variables
-genai.configure(api_key=os.environ.get("GEMINI_API_KEY"))
+# Configure API Key
+api_key = os.environ.get("GEMINI_API_KEY")
+if api_key:
+    genai.configure(api_key=api_key)
 
-# Set up Gemini model with updated version name
-model = genai.GenerativeModel(
-    model_name='gemini-1.5-flash-latest',
-    system_instruction="You are a polite and helpful AI assistant for IV Intelligence on WhatsApp. Reply concisely."
-)
+# Use standard gemini-1.5-flash model
+model = genai.GenerativeModel('gemini-1.5-flash')
 
 @app.route("/webhook", methods=['POST'])
 def webhook():
@@ -24,12 +23,11 @@ def webhook():
         return str(resp)
 
     try:
-        # Generate AI response
         response = model.generate_content(incoming_msg)
         reply_text = response.text
     except Exception as e:
         print(f"Error generating response: {e}")
-        reply_text = "Sorry, I encountered an issue processing your message."
+        reply_text = f"Gemini Error: {str(e)}"  # దీనివల్ల అసలు ఎర్రర్ ఏంటో వాట్సాప్‌లోనే కనిపిస్తుంది!
 
     resp.message(reply_text)
     return str(resp)
