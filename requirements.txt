@@ -1,4 +1,4 @@
-Flask
-twilio
-google-generativeai
-gunicorn
+fastapi
+uvicorn
+openai
+python-dotenv
