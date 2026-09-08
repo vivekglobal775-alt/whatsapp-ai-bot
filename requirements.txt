@@ -1,4 +1,1 @@
-Flask
-twilio
-google-generativeai
-gunicorn
+google-generativeai>=0.8.3
